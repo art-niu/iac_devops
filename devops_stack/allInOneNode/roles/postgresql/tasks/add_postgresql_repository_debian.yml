@@ -1,0 +1,43 @@
+# add postgresql repository
+# Author: Arthur
+#
+#Add PostgreSQL Repository
+#
+- name: Add PostgreSQL signing key
+  apt_key:
+    url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
+    state: present
+
+- apt_repository: 
+    repo: deb http://apt.postgresql.org/pub/repos/apt/ buster-pgdg main
+    state: present
+    filename: pgdg
+    update_cache: yes
+  when: 
+    - ansible_distribution == 'Debian'
+    - ansible_distribution_release == 'buster'
+    
+# Add PostgreSQL Repository
+- apt_repository: 
+    repo: deb http://apt.postgresql.org/pub/repos/apt/ stretch-pgdg main
+    state: present
+    filename: pgdg
+    update_cache: yes
+  when: 
+  - ansible_distribution == 'Debian'
+  - ansible_distribution_release == 'stretch'
+
+#  Add PostgreSQL Repository   
+- apt_repository:
+    repo: deb http://apt.postgresql.org/pub/repos/apt/ jessie-pgdg main
+    state: present
+    filename: pgdg
+    update_cache: yes
+  when: 
+  - ansible_distribution == 'Debian'
+  - ansible_distribution_release == 'jessie'
+
+
+- name: Update apt cache
+  apt:
+    update_cache: yes

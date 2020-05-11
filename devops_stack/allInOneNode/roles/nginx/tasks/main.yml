@@ -1,0 +1,26 @@
+---
+# tasks file for nginx
+# # Author: Arthur Niu
+#
+
+- name: install JDK which is defined in vars/mail.yml
+  apt:
+    name: nginx-full
+    state: latest
+  
+- name: enable nginx
+  service:
+    name: nginx
+    enabled: yes  
+
+- name: start nginx
+  service:
+    name: nginx
+    state: started
+  notify: Check HTTP Service
+
+
+- name: Check HTTP Service
+  uri:
+    url: http://{{ ansible_default_ipv4.address }}
+    status_code: 200

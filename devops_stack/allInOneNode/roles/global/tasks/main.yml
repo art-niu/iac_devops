@@ -1,0 +1,19 @@
+---
+# tasks file for global
+#
+#
+- name: Install gnu patch
+  apt:
+    pkg:
+      - patch
+      - zip
+
+- name: Create Link for nohup
+  file: 
+    src: "/usr/bin/nohup"
+    dest: "/bin/nohup"
+    owner: root
+    group: root
+    state: link
+  when: 
+  - ansible_distribution == 'Debian'    

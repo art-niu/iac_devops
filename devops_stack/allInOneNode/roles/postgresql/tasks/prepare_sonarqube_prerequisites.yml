@@ -1,0 +1,16 @@
+# Create sonarqube user and database
+# Author: Arthur Niu
+#
+- name: Generate sql script to create sonarqube user and schema
+  template:
+    src: sonarqube.sql
+    dest: /tmp/sonarqube.sql
+    owner: "{{ sonarqube_db_admin }}"
+    mode: "0660"
+
+# To less the intervenrtsions, implement the solution with shell command    
+- name: Create sonarqube user and database
+  shell: su - {{ sonarqube_db_admin }} -c "/usr/bin/psql -f /tmp/sonarqube.sql"
+  become: yes
+  register: result_sonarqube_db_user_schema 
+

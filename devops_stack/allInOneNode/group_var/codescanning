@@ -1,0 +1,8 @@
+---
+ansible_become: true
+ansible_become_pass: password
+sonarqube_db_user: sonarqube
+sonarqube_db_user_password: hardRock
+sonarqube_db_name: sonarqube
+
+...

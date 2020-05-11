@@ -1,0 +1,21 @@
+# The task is to update /etc/security/limits.conf
+#
+# Author: Arthur Niu
+#
+
+- name: User sonarqube can open at least 65536 file descriptors
+  lineinfile:
+    path: /etc/security/limits.conf
+    regexp: '^{{ sonarqube_owner }}.*nofile'
+    insertbefore: '# End of file'
+    line: '{{ sonarqube_owner }}        -     nofile     65536'
+
+
+- name: User sonarqube can open at least 4096 threads
+  lineinfile:
+    path: /etc/security/limits.conf
+    regexp: '^{{ sonarqube_owner }}.*nproc'
+    insertbefore: '# End of file'
+    line: '{{ sonarqube_owner }} - nproc 4096'
+
+

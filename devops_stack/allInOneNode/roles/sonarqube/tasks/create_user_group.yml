@@ -1,0 +1,19 @@
+#
+# Author: Arthur Niu
+#
+#
+---
+- name: Add group sonarqube
+  group:
+    name: "{{ sonarqube_group }}"
+    state: present
+
+- name: Add user sonarqube
+  user:
+    name: "{{ sonarqube_owner }}"
+    comment: sonarqube runner
+    shell: /bin/bash
+    group: sonarqube
+    state: present
+
+...

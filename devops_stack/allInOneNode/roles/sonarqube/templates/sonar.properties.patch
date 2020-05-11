@@ -1,0 +1,48 @@
+--- sonar.properties	2020-05-09 20:20:59.125657225 +0000
++++ sonar.properties.product	2020-05-09 20:34:30.008467480 +0000
+@@ -15,8 +15,8 @@
+ # User credentials.
+ # Permissions to create tables, indices and triggers must be granted to JDBC user.
+ # The schema must be created first.
+-#sonar.jdbc.username=
+-#sonar.jdbc.password=
++sonar.jdbc.username={{ sonarqube_db_user }}
++sonar.jdbc.password={{ sonarqube_db_user_password | b64decode }}
+ 
+ #----- Embedded Database (default)
+ # H2 embedded database server listening port, defaults to 9092
+@@ -33,7 +33,7 @@
+ 
+ #----- PostgreSQL 9.3 or greater
+ # By default the schema named "public" is used. It can be overridden with the parameter "currentSchema".
+-#sonar.jdbc.url=jdbc:postgresql://localhost/sonarqube?currentSchema=my_schema
++sonar.jdbc.url=jdbc:postgresql://{{ sonarqube_db_ipv4 }}/{{ sonarqube_db_name }}?
+ 
+ 
+ #----- Microsoft SQLServer 2014/2016/2017 and SQL Azure
+@@ -99,13 +99,13 @@
+ # Binding IP address. For servers with more than one IP address, this property specifies which
+ # address will be used for listening on the specified ports.
+ # By default, ports will be used on all IP addresses associated with the server.
+-#sonar.web.host=0.0.0.0
++sonar.web.host=0.0.0.0
+ 
+ # Web context. When set, it must start with forward slash (for example /sonarqube).
+ # The default value is root context (empty value).
+-#sonar.web.context=
++sonar.web.context=/sonarqube
+ # TCP port for incoming HTTP connections. Default value is 9000.
+-#sonar.web.port=9000
++sonar.web.port=9000
+ 
+ 
+ # The maximum number of connections that the server will accept and process at any given time.
+@@ -350,7 +350,7 @@
+ 
+ # Global level of logs (applies to all 4 processes).
+ # Supported values are INFO (default), DEBUG and TRACE
+-#sonar.log.level=INFO
++sonar.log.level=DEBUG
+ 
+ # Level of logs of each process can be controlled individually with their respective properties.
+ # When specified, they overwrite the level defined at global level.

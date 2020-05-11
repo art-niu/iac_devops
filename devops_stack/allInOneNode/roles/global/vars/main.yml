@@ -1,0 +1,22 @@
+---
+# vars file for global
+#
+#
+sonarqube_archive_url: https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-8.3.0.34182.zip
+temporary_folder: /tmp
+sonarqube_destination_folder: /opt/sonarqube
+sonarqube_installation_folder: /opt
+sonarqube_home: /opt/sonarqube
+sonarqube_owner: sonarqube
+sonarqube_group: sonarqube
+sonarqube_web_port: 9000
+
+java_home: /usr/lib/jvm/java-11-openjdk-amd64
+
+# Variables for sonarqube
+sonarqube_db_ipv4: 10.128.0.60
+sonarqube_db_hostname: sonarqube
+sonarqube_db_admin: postgres
+sonarqube_db_user: sonarqube
+sonarqube_db_user_password: aGFyZFIwY2sK
+sonarqube_db_name: sonarqube

@@ -1,0 +1,31 @@
+---
+# tasks file for postgresql
+# Author: Arthur Niu
+#
+#
+- name: load vars from globe role
+  include_vars: 
+    file: "{{ playbook_dir }}/roles/global/vars/main.yml"
+
+- include: add_postgresql_repository_debian.yml
+  when: ansible_distribution == 'Debian'
+
+- name: install postgresql server and client
+  apt: 
+    pkg:
+      - postgresql-12
+      - postgresql-client-12
+
+- name: determince configuration file path used by postgresql
+  shell: su - {{ sonarqube_db_admin }} -c "/usr/bin/psql -U postgres -c 'SHOW config_file' |grep etc"
+  become: yes
+  register: postgresql_configuration_file
+
+- name: change postgresql listen address
+  lineinfile:
+    path: "{{ postgresql_configuration_file.stdout_lines[0] | regex_replace(' ', '') }}"
+    regexp: '^listen_addresses ='
+    insertbefore: '^#listen_addresses = '
+    line: "listen_addresses='*'"
+
+- include: prepare_sonarqube_prerequisites.yml

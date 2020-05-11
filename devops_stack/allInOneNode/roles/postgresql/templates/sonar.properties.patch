@@ -1,0 +1,9 @@
+  sonar.jdbc.username={{ sonarqube_db_user }}
+  sonar.jdbc.password={{ sonarqube_db_user_password }}
+  sonar.jdbc.url=jdbc:postgresql://{{ ansible_default_ipv4.address }}/{{ sonarqube_db_name }}
+  sonar.web.host=0.0.0.0
+
+  # Web context. When set, it must start with forward slash (for example /sonarqube).
+  sonar.web.context=/sonarqube
+  # TCP port for incoming HTTP connections. Default value is 9000.
+  sonar.web.port={{ sonarqube_web_port }}

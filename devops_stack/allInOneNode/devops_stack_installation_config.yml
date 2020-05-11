@@ -1,0 +1,26 @@
+#
+# Author: Arthur Niu
+#
+#
+---
+-
+  hosts: all
+  become: yes
+
+  roles:
+    - global
+
+- 
+  hosts: sonarqubedatabase
+  become: yes
+
+  roles: 
+    - postgresql
+
+
+-
+  hosts: sonarqubes
+  become: yes
+
+  roles:
+    - sonarqube

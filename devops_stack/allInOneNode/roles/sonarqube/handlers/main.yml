@@ -1,0 +1,11 @@
+---
+# handlers file for sonarqube
+#
+#
+- name: Show archive contents
+  debug:
+    msg: "{{ archive_contents }}"
+#
+- name: verify variables
+  debug:
+    var: sonarqube_db_user_password

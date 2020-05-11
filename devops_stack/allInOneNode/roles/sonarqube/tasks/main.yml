@@ -1,0 +1,81 @@
+---
+# tasks file for sonarqube
+# Author: Arthur Niu
+#
+- name: load vars from globe role
+  include_vars: 
+    file: "{{ playbook_dir }}/roles/global/vars/main.yml"
+   
+- include: create_user_group.yml
+
+- name: Download and Extract Sonarqube Archive
+  unarchive:
+    src: "{{ sonarqube_archive_url }}"
+    dest: /opt
+    remote_src: yes
+    owner: "{{ sonarqube_owner }}"
+    group: "{{ sonarqube_group }}"
+    list_files: yes
+  register: archive_contents
+
+# Get the unarchived folder name
+- set_fact: 
+    unarchived_folder: "{{ archive_contents.files[0] | regex_replace('\\/$', '') }}"
+
+- name: save symbol link /opt/sonarqube for rollback purpose, can be cleaned up manually
+  shell: mv "{{ sonarqube_home }}" "{{ sonarqube_home }}.{{ ansible_date_time.epoch }}"
+
+# Link the unarchived folder to sonarqube
+- name: create symbol link to /opt/sonarqube
+  file:
+      src: "/opt/{{ unarchived_folder }}"
+      dest: "{{ sonarqube_home }}"
+      owner: "{{ sonarqube_owner }}"
+      group: "{{ sonarqube_group }}"
+      state: link
+
+- name: Find sonarqube application jar file like sonar-application-8.3.0.34182.jar
+  find:
+    path: "{{ sonarqube_home }}/lib"
+    patterns: "^sonar-application-([0-9]+\\.){4}jar$"
+    #patterns: "sonar-application-([0-9]+\\.){4}jar"
+    use_regex: yes
+  register: sonarqube_application_jars
+
+- name:
+  debug:
+    msg: "{{ sonarqube_application_jars.files[0].path }}"
+
+- set_fact:
+    sonarqube_application_jar: "{{ sonarqube_application_jars.files[0].path }}"
+
+- name: Copy sonarqube service file to target
+  template:
+    src: sonarqube.service
+    dest: /lib/systemd/system/sonarqube.service
+    mode: 0644
+
+- name: Customize and deliver sonar.properties
+  template:
+    src: sonar.properties
+    dest: "{{ sonarqube_home }}/conf/sonar.properties"
+    owner: "{{ sonarqube_owner }}"
+    group: "{{ sonarqube_group }}"
+
+- include: server_tunning.yml
+
+- name: Create snoarqube service link in /etc/systemd/system/multi-user.target.wants/
+  file:
+    src: "/lib/systemd/system/sonarqube.service"
+    dest: "/etc/systemd/system/multi-user.target.wants/sonarqube.service"
+    state: link
+
+- name: Startup sonarqube
+  service: 
+    name: sonarqube
+    state: started
+
+- name: Enable sonarqube
+  service:
+    name: sonarqube
+    enabled: yes

@@ -1,0 +1,1 @@
+ansible-playbook devops_stack_installation_config.yml -vv

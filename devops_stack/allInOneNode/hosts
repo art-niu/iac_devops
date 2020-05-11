@@ -1,0 +1,12 @@
+[control]
+ansible
+
+[codescanning]
+sonarqube
+
+[sonarqubes]
+sonarqube
+
+[sonarqubedatabase]
+sonarqube
+
