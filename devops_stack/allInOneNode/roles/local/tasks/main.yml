@@ -1,0 +1,28 @@
+---
+# tasks file for local
+# #
+# Arthur Niu
+#
+#
+#
+#- name: install dnspython
+#  connection: local
+#  become: yes
+#  apt:
+#    pkg: 
+#      - python-dnspython
+
+#- name: determine database server ipv4 address
+#  connection: local
+#  debug:
+#      msg: "art - {{ item }} - {{ lookup('dig', 'www.ibm.com') }}"
+      #msg: "art - {{ item }} - {{ lookup('dig', '{{ item }}') }}"
+      #  with_items:
+      #        - "{{ groups['sonarqubedatabase'] }}"
+      #  delegate_to: {{ item }}
+
+- name: set sonarqube parameter in global variables  
+  lineinfile:
+    path: "{{ playbook_dir }}/roles/global/vars/main.yml"
+    regexp: '^sonarqube_db_hostname:'
+    line: "sonarqube_db_hostname: {{ groups['sonarqubedatabase'][0] }}"

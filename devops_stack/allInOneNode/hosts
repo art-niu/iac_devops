@@ -2,11 +2,11 @@
 ansible
 
 [codescanning]
-sonarqube
+sonarqube01.us-central1-a.c.hello-world-261815.internal
 
 [sonarqubes]
-sonarqube
+sonarqube01.us-central1-a.c.hello-world-261815.internal
 
 [sonarqubedatabase]
-sonarqube
+sonarqube01.us-central1-a.c.hello-world-261815.internal
 

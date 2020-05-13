@@ -22,8 +22,14 @@
 - set_fact: 
     unarchived_folder: "{{ archive_contents.files[0] | regex_replace('\\/$', '') }}"
 
+- name: check if there is sonarqube aready installed
+  stat:
+    path: "{{ sonarqube_home }}"
+  register: old_sonarqube
+
 - name: save symbol link /opt/sonarqube for rollback purpose, can be cleaned up manually
   shell: mv "{{ sonarqube_home }}" "{{ sonarqube_home }}.{{ ansible_date_time.epoch }}"
+  when: old_sonarqube.stat.exists
 
 # Link the unarchived folder to sonarqube
 - name: create symbol link to /opt/sonarqube

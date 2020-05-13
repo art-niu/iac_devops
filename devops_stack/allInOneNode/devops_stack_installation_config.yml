@@ -3,6 +3,17 @@
 #
 #
 ---
+# Run tasks on local only
+# Configure the prerequisited for local
+-
+  hosts: localhost
+
+  connection: local
+  roles:
+    - local
+
+# Run tasks on all targets
+# Prepare the prerequisites for all targets
 -
   hosts: all
   become: yes
@@ -10,6 +21,7 @@
   roles:
     - global
 
+# Run tasks for sonarqube database
 - 
   hosts: sonarqubedatabase
   become: yes
@@ -17,7 +29,7 @@
   roles: 
     - postgresql
 
-
+# Run tasks for sonarqube 
 -
   hosts: sonarqubes
   become: yes

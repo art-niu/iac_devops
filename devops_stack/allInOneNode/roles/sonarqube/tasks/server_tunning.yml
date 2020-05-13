@@ -10,12 +10,19 @@
     insertbefore: '# End of file'
     line: '{{ sonarqube_owner }}        -     nofile     65536'
 
-
 - name: User sonarqube can open at least 4096 threads
   lineinfile:
     path: /etc/security/limits.conf
     regexp: '^{{ sonarqube_owner }}.*nproc'
     insertbefore: '# End of file'
-    line: '{{ sonarqube_owner }} - nproc 4096'
+    line: '{{ sonarqube_owner }}       -       nproc   4096'
 
+- name: add vm.max_map_count to /etc/systemct.conf for es
+  lineinfile:
+    path: /etc/sysctl.conf
+    regexp: 'vm.max_map_count*=*'
+    line: 'vm.max_map_count=262144'
 
+- name: reload sysctl.conf
+  shell: sysctl --system
+  become: yes

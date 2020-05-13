@@ -14,8 +14,7 @@ sonarqube_web_port: 9000
 java_home: /usr/lib/jvm/java-11-openjdk-amd64
 
 # Variables for sonarqube
-sonarqube_db_ipv4: 10.128.0.60
-sonarqube_db_hostname: sonarqube
+sonarqube_db_hostname: sonarqube01.us-central1-a.c.hello-world-261815.internal
 sonarqube_db_admin: postgres
 sonarqube_db_user: sonarqube
 sonarqube_db_user_password: aGFyZFIwY2sK
