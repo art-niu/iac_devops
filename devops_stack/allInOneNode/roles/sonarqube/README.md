@@ -3,30 +3,24 @@ To install the latest sonarqube, please check the prerequisites on https://docs.
 Role Name
 =========
 
-A brief description of the role goes here.
+sonarqube
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
-
+Database must be ready, user and schema have been created. 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
-
+PostgreSQL is chosen in this scenario, it must be executed first.
 Example Playbook
 ----------------
 
 
-templates/sonar.properties.patch was created with below command, you can regenerated in case:
-
-$  diff -u sonar.properties  sonar.properties.product
 
 License
 -------
@@ -36,4 +30,17 @@ BSD
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+
+Other
+------------------
+If you found sonarqube only listen on ipv6, then disable ipv6 if it is not being used.
+
+How to disable ipv6 on Debina and Ubuntu:
+
+add below lines into /etc/sysctl.conf
+
+	net.ipv6.conf.all.disable_ipv6 = 1
+	net.ipv6.conf.default.disable_ipv6 = 1
+	net.ipv6.conf.lo.disable_ipv6 = 1 
+
+then reboot your server.
