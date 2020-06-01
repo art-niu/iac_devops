@@ -2,6 +2,9 @@
 # tasks file for openjdk
 # Author: Arthur Niu
 #
+- name: load vars from globe role
+  include_vars: 
+    file: "{{ playbook_dir }}/roles/global/vars/main.yml"
 
 - name: install JDK which is defined in vars/mail.yml
   apt:
