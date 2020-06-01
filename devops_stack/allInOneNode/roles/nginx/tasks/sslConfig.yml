@@ -1,0 +1,8 @@
+---
+- name: Generate a self signed openssl certificate
+  openssl_certificate:
+    path: /etc/ssl/private/devops-nginx.crt
+    privatekey_path: /etc/ssl/private/devops-nginx.pem
+    csr_path: /etc/ssl/private/devops-nginx.csr
+    provider: selfsigned
+
