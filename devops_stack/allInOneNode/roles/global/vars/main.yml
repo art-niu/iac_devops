@@ -9,9 +9,11 @@ sonarqube_installation_folder: /opt
 sonarqube_home: /opt/sonarqube
 sonarqube_owner: sonarqube
 sonarqube_group: sonarqube
+sonarqube_web_context: /sonarqube
 sonarqube_web_port: 9000
 
 java_home: /usr/lib/jvm/java-11-openjdk-amd64
+jdk_version: openjdk-8-jdk
 
 # Variables for sonarqube
 sonarqube_db_hostname: sonarqube01.us-central1-a.c.hello-world-261815.internal
