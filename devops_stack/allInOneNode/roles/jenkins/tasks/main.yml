@@ -1,2 +1,49 @@
 ---
-# tasks file for jenkins
+# tasks file for nginx
+# # Author: Arthur Niu
+#
+- name: load vars from globe role
+  include_vars: 
+    file: "{{ playbook_dir }}/roles/global/vars/main.yml"
+
+- name: Update and upgrade apt packages
+  become: true
+  apt:
+    #upgrade: yes
+    update_cache: yes
+    cache_valid_time: 86400 #One day
+
+- name: Add Jenkins signing key
+  apt_key:
+    url: https://pkg.jenkins.io/debian-stable/jenkins.io.key
+    state: present
+
+- apt_repository: 
+    repo: deb https://pkg.jenkins.io/debian-stable binary/
+    state: present
+    filename: jenkins
+    #update_cache: yes
+  when: 
+    - ansible_distribution == 'Debian'
+
+- name: install Jenkins
+  apt:
+    name: "jenkins"
+    state: latest
+  
+- name: enable Jenkins
+  service:
+    name: jenkins
+    enabled: yes  
+
+- name: start Jenkins
+  service:
+    name: jenkins
+    state: started
+  notify: Check HTTP Service
+
+- name: Check Jenkins Service
+  uri:
+    url: http://{{ ansible_default_ipv4.address }}:8080
+    status_code: 200
+
