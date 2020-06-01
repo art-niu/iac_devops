@@ -2,12 +2,32 @@
 # tasks file for nginx
 # # Author: Arthur Niu
 #
+- name: load vars from globe role
+  include_vars: 
+    file: "{{ playbook_dir }}/roles/global/vars/main.yml"
 
-- name: install JDK which is defined in vars/mail.yml
+- name: install nginx
   apt:
     name: nginx-full
     state: latest
   
+- name: remove default nginx link
+  file:
+    path: "/etc/nginx/sites-enabled/default"
+    state: absent
+
+- name: copy reverse-proxy.conf to nginx server
+  template:
+    src: reverse-proxy.conf
+    dest: /etc/nginx/sites-available
+    mode: 0644
+
+- name: create link to reverse-proxy.conf
+  file:
+    src: /etc/nginx/sites-available/reverse-proxy.conf
+    dest: /etc/nginx/sites-enabled/reverse-proxy.conf
+    state: link
+
 - name: enable nginx
   service:
     name: nginx
@@ -19,8 +39,9 @@
     state: started
   notify: Check HTTP Service
 
+#- name: Check HTTP Service
+  #  uri:
+          #    url: http://{{ ansible_default_ipv4.address }}
+    #    status_code: 200
 
-- name: Check HTTP Service
-  uri:
-    url: http://{{ ansible_default_ipv4.address }}
-    status_code: 200
+- include: sslConfig.yml
