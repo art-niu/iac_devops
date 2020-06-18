@@ -1,0 +1,8 @@
+---
+# vars file for ubuntu
+#
+
+haproxyVersion: 2.1
+haproxyBinaryUrl: http://www.haproxy.org/download/2.1/src/haproxy-2.1.7.tar.gz
+haproxyBinaryMD5: http://www.haproxy.org/download/2.1/src/haproxy-2.1.7.tar.gz.md5
+

@@ -1,0 +1,16 @@
+---
+# vars file for global
+#
+#
+temporary_folder: /tmp
+
+java_home: /usr/lib/jvm/java-11-openjdk-amd64
+target_jdk: openjdk-11-jdk
+
+# Variables for balancers
+load_balancer_config_file: /etc/nginx/sites-available/load-balancer.conf
+backend_server_list: [10.2.133.11,10.2.133.22,10.2.133.33]
+backend_name: devsecops
+
+# ssl dependencies
+ssl_dependencies: [build-essential,libssl-dev,libffi-dev,python-dev,python-cryptography]

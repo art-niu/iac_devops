@@ -1,0 +1,6 @@
+---
+-
+  hosts: lbalancers
+  become: yes
+  roles:
+    - nginx

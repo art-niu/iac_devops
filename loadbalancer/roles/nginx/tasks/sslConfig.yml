@@ -1,0 +1,28 @@
+---
+- name: create /etc/ssl/csr
+  file: 
+    path: /etc/ssl/csr
+    state: directory
+
+- name: create /etc/ssl/crt
+  file: 
+    path: /etc/ssl/crt
+    state: directory
+
+- name: Generate an OpenSSL private key with the default values (4096 bits, RSA)
+  openssl_privatekey:
+    path: /etc/ssl/private/devops-nginx.pem
+
+- name: Generate an OpenSSL Certificate Signing Request
+  openssl_csr:
+    path: /etc/ssl/csr/devops-nginx.csr
+    privatekey_path: /etc/ssl/private/devops-nginx.pem
+    common_name: "{{ ansible_host }}"
+
+- name: Generate a self signed openssl certificate
+  openssl_certificate:
+    path: /etc/ssl/crt/devops-nginx.crt
+    privatekey_path: /etc/ssl/private/devops-nginx.pem
+    csr_path: /etc/ssl/csr/devops-nginx.csr
+    provider: selfsigned
+

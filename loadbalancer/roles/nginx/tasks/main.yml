@@ -1,0 +1,64 @@
+---
+# tasks file for nginx
+# # Author: Arthur Niu
+#
+- name: load vars from globe role
+  include_vars: 
+    file: "{{ playbook_dir }}/roles/global/vars/main.yml"
+
+- name: install nginx
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ ssl_dependencies }}"
+  
+- name: install nginx
+  apt:
+    name: nginx-full
+    state: latest
+  
+- name: remove default nginx link
+  file:
+    path: "/etc/nginx/sites-enabled/default"
+    state: absent
+
+- name: copy load-balancer.conf to nginx server
+  template:
+    src: load-balancer.conf
+    dest: /etc/nginx/sites-available
+    mode: 0644
+
+- name: create link to load-balancer.conf
+  file:
+    src: /etc/nginx/sites-available/load-balancer.conf
+    dest: /etc/nginx/sites-enabled/load-balancer.conf
+    state: link
+
+- name: Build a list of all the security group names.
+  set_fact:
+    backend_servers: "{{ backend_servers | default() }} \t\tserver  {{ item }};\n"
+  loop: "{{ backend_server_list }}"
+
+- name: Before Ansible 2.3, option 'dest', 'destfile' or 'name' was used instead of 'path'
+  replace:
+    path: /etc/nginx/sites-available/load-balancer.conf
+    regexp: '__BACKEND_SERVER_LIST__'
+    replace: " {{ backend_servers }} "
+
+- name: enable nginx
+  service:
+    name: nginx
+    enabled: yes  
+
+- name: start nginx
+  service:
+    name: nginx
+    state: started
+  notify: Check HTTP Service
+
+#- name: Check HTTP Service
+  #  uri:
+          #    url: http://{{ ansible_default_ipv4.address }}
+    #    status_code: 200
+
+- include: sslConfig.yml
